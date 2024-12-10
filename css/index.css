@@ -1,0 +1,39 @@
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+}
+
+header {
+    background: linear-gradient(to right, #005ff8, #3e2c6e);
+}
+
+.features {
+    background-color: #f9f9f9;
+}
+
+.features .icon img {
+    filter: grayscale(50%);
+    transition: filter 0.3s;
+}
+
+.features .icon img:hover {
+    filter: none;
+}
+
+.cta {
+    background: linear-gradient(to right, #005ff8, #3e2c6e);
+}
+
+footer {
+    background: #2c6e49;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2.5rem;
+    }
+    header .lead {
+        font-size: 1rem;
+    }
+}
