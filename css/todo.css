@@ -1,2 +1,10 @@
-@import url(header.css);
+
 @import url(footer.css);
+header {
+    background: linear-gradient(to right, #005ff8, #3e2c6e);
+}
+
+
+footer {
+    background: #ffffff;
+}
