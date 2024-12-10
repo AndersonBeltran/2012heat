@@ -60,6 +60,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadPriorties();
 });
 
-    // const descriptionSelect = document.getElementById("description");
-    // const deadlineSelect = document.getElementById("deadline");
+//description textbox and submitting button 
+document.addEventListener("DOMContentLoaded", () => {
+    const description = document.getElementById("describeText")
+    const submitButton = document.getElementById("submitButton")
+
+//save to local storage
+submitButton.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    const describeText = description.value;
+    console.log(describeText);
+    
+    if (describeText.trim() === "") {
+        alert(`Please add a description or title for the task!`)
+        return;
+    }
+
+    localStorage.setItem("savedDescription", describeText);
+    alert(`Task saved! Let's get busy!`);
+    });
+});
+
+    // const deadlineSelect = document.getElementById("deadline")
     
