@@ -1,5 +1,7 @@
-@import url(header.css);
-@import url(footer.css);
+header {
+    background: linear-gradient(to right, #005ff8, #3e2c6e);
+}
+
 body {
     font-family: "Arial", sans-serif;
     color: #333;
@@ -7,12 +9,12 @@ body {
     padding: 0;
 }
 
-.container {
+main {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #005ff8, #3e2c6e);
+    background: white;
 }
 
 form {
@@ -56,7 +58,7 @@ button {
 }
 
 button:hover {
-    background-color: #3e8e41;
+    background-color: #ffffff;
     transform: scale(1.05);
 }
 
@@ -73,4 +75,8 @@ button:hover {
 h1 {
     text-align: center;
     margin-top: 20px;
+}
+
+footer {
+    background: #ffffff;
 }
