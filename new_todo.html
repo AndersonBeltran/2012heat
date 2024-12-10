@@ -7,19 +7,23 @@
     <link rel="stylesheet" href="css/new_todo.css" />
   </head>
   <body>
-    
     <div class="container">
       <form id="newTodoForm">
         <a href="index.html"><img src="#" alt="Home" /></a>
         <h1>Add New ToDo Task</h1>
         <label for="user">User:</label>
-        <select id="user" name="user"></select>
+        <select id="user" name="user">
+          <option value="#">Select...</option>
+        </select>
 
         <label for="category">Category:</label>
-        <select id="category" name="category"></select>
+        <select id="category" name="category">
+          <option value="#">Select...</option>
+        </select>
 
         <label for="priority">Priority:</label>
         <select id="priority" name="priority">
+          <option value="#">Select...</option>
           <option value="low">Low</option>
           <option value="medium">Medium</option>
           <option value="high">High</option>
