@@ -1,9 +1,5 @@
 "use strict"
 
-// 3 drop downs todos, api/categories , urgency classifications
-// text area
-// input type
-
 //users
     document.addEventListener("DOMContentLoaded", async () => {
         const userSelect = document.getElementById("user");
@@ -17,6 +13,8 @@
                 option.value = user.id; 
                 option.textContent = user.name; 
                 userSelect.appendChild(option);
+                const userId = document.getElementById("user").value;
+                console.log("User:", userId);
             });
         }
     
@@ -36,6 +34,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 option.value = category.id; 
                 option.textContent = category.name; 
                 categorySelect.appendChild(option);
+                const categoryId = document.getElementById("category").value;
+                console.log("Category:", categoryId);
+
         })
         
     }
@@ -47,13 +48,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     const prioritySelect = document.getElementById("priority");
     async function loadPriorties() {
         const response = await fetch("http://localhost:8083/api/todos");
-        const priority = await response.json();
+        const priorities  = await response.json();
 
-        priority.forEach(priority => {
+        priorities.forEach(priorityOption => {
                 const option = document.createElement("option");
-                option.value = priority.id; 
-                option.textContent = priority.name; 
+                option.value = priorityOption.id; 
+                option.textContent = priorityOption.name; 
                 // prioritySelect.appendChild(option); commented out bcuz it added too many
+                const priority = document.getElementById("priority").value;
+                console.log("Priority:", priority);
         })
         
     }
@@ -65,7 +68,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const description = document.getElementById("describeText")
     const submitButton = document.getElementById("submitButton")
 
-//save to local storage
+
+    //deadline
+    const deadlineSelect = document.getElementById("deadline")
+    const deadlineDate = deadline.value;
+    console.log("Deadline:", deadlineDate);
+
+//submit button
 submitButton.addEventListener("click", (event) => {
     event.preventDefault();
 
@@ -77,10 +86,18 @@ submitButton.addEventListener("click", (event) => {
         return;
     }
 
-    localStorage.setItem("savedDescription", describeText);
+// save data to local storage 
+const taskData = {
+    description: describeText,
+    deadline: deadlineDate,
+    user: userId,
+    category: categoryId,
+    priority: priority
+}
+
+localStorage.setItem("savedTask", JSON.stringify(taskData));
+
+    //saved task alert for end
     alert(`Task saved! Let's get busy!`);
     });
 });
-
-    // const deadlineSelect = document.getElementById("deadline")
-    
