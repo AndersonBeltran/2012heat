@@ -22,9 +22,12 @@ function loadUsers() {
           .then(response => response.json())
           .then(todos => {
             const userTodos = todos.filter(todo => todo.userid == userId);
-                todosTable.innerHTML = '';
+            while (todosTable.firstChild) {
+                todosTable.removeChild(todosTable.firstChild);
+            }
                 userTodos.forEach(todo => {
                     const row = document.createElement('tr');
+    
                     const descriptionCell = document.createElement('td');
                     descriptionCell.textContent = todo.description;
                     row.appendChild(descriptionCell);
@@ -49,18 +52,11 @@ function loadUsers() {
             if (userId) {
               loadTodos(userId); 
             } else {
-              todosTable.innerHTML = ''; 
-            }
+              while (todosTable.firstChild) {
+                todosTable.removeChild(todosTable.firstChild);
+              }           
+             }
           });
           loadUsers();
 
 
-
-    // userDropdown.addEventListener('change', function () {
-    //   const selectedUser = this.options[this.selectedIndex].text;
-    //   if (selectedUser) {
-    //     console.log(`Selected User: ${selectedUser}`);
-    //     alert(`You selected: ${selectedUser}`); 
-    //   }
-    // });
-    // loadUsers();
