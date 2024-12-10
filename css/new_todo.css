@@ -1,3 +1,6 @@
+@import url(header.css);
+@import url(footer.css);
+
 button {
   background-color: #26a872; /* Green */
   border: none;
