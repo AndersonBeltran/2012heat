@@ -1,12 +1,21 @@
 @import url(header.css);
 @import url(footer.css);
+
 body {
   font-family: "Arial", sans-serif;
-  background-color: #f4f4f9;
   color: #333;
   margin: 0;
   padding: 0;
 }
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #005ff8, #3e2c6e);
+}
+
 form {
   max-width: 600px;
   margin: 50px auto;
@@ -32,6 +41,7 @@ button {
   border-radius: 5px;
   box-sizing: border-box;
 }
+
 button {
   background: linear-gradient(135deg, #005ff8, #3e2c6e);
   border: none;
@@ -49,8 +59,10 @@ button {
 }
 
 button:hover {
+  background-color: #3e8e41;
   transform: scale(1.05);
 }
+
 @media (max-width: 600px) {
   form {
     padding: 10px;
@@ -62,15 +74,8 @@ button:hover {
     padding: 8px;
   }
 }
+
 h1 {
   text-align: center;
   margin-top: 20px;
-}
-
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f4f4f9;
 }
