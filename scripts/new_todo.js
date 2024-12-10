@@ -97,7 +97,7 @@ const taskData = {
 
 localStorage.setItem("savedTask", JSON.stringify(taskData));
 
-    //saved task alert
+    //saved task alert for end
     alert(`Task saved! Let's get busy!`);
     });
 });
