@@ -1,5 +1,5 @@
 header {
-    background: linear-gradient(to right, #005ff8, #3e2c6e);
+    background: linear-gradient(to bottom, #6892d5, #645295);
 }
 
 body {
@@ -21,7 +21,7 @@ body {
 }
 
 .cta {
-    background: linear-gradient(to right, #005ff8, #3e2c6e);
+    background: linear-gradient(to top, #6892d5, #645295);
 }
 
 footer {
