@@ -26,23 +26,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   
     // Load categories into the dropdown
-    async function loadCategories() {
-      try {
-        const response = await fetch("http://localhost:8083/api/categories");
-        if (!response.ok) throw new Error("Failed to fetch categories");
-        const categories = await response.json();
+async function loadCategories() {
+    try {
+      const response = await fetch("http://localhost:8083/api/categories");
+      if (!response.ok) throw new Error("Failed to fetch categories");
+      const categories = await response.json();
   
-        categories.forEach((category) => {
-          const option = document.createElement("option");
-          option.value = category; // Assuming categories are strings
-          option.textContent = category;
-          categorySelect.appendChild(option);
-        });
-      } catch (error) {
-        console.error("Error loading categories:", error);
-        alert("Failed to load categories. Please try again.");
-      }
+      categories.forEach((category) => {
+        const option = document.createElement("option");
+        option.value = category; // Use the actual category value if needed
+        option.textContent = typeof category === "string" ? category : category.name || category.title || "Unknown Category";
+        categorySelect.appendChild(option);
+      });
+    } catch (error) {
+      console.error("Error loading categories:", error);
+      alert("Failed to load categories. Please try again.");
     }
+  }
   
     // Handle form submission
     submitButton.addEventListener("click", async (event) => {
