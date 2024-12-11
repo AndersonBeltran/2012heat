@@ -17,6 +17,10 @@ main {
     background: white;
 } */
 
+header {
+    background: linear-gradient(to bottom, #6892d5, #645295);
+}
+
 form {
     max-width: 600px;
     margin: 50px auto;
@@ -42,7 +46,7 @@ input, select, button {
 }
 
 button {
-    background: linear-gradient(135deg, #005ff8, #3e2c6e);
+    background: linear-gradient(135deg, #6892d5, #645295);
     border: none;
     color: white;
     padding: 10px 20px;
