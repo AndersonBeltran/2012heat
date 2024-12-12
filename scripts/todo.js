@@ -1,62 +1,121 @@
-const userDropdown = document.getElementById('userDropdown');
-const todosTable = document.getElementById('todosTable');
+const userDropdown = document.getElementById("userDropdown");
+const todosTable = document.getElementById("todosTable");
 
 function loadUsers() {
-    fetch('http://localhost:8083/api/users')
-    .then(response => response.json())
-    .then(users => {
-        users.forEach(user => {
-            const option = document.createElement('option');
-            option.value = user.id; 
-            option.textContent = user.name; 
-            userDropdown.appendChild(option); 
-          });
-        })
-        .catch(error => {
-          console.error('Error fetching users:', error);
-        });
+  fetch("http://localhost:8083/api/users")
+    .then((response) => response.json())
+    .then((users) => {
+      users.forEach((user) => {
+        const option = document.createElement("option");
+        option.value = user.id;
+        option.textContent = user.name;
+        userDropdown.appendChild(option);
+      });
+    })
+    .catch((error) => {
+      console.error("Error fetching users:", error);
+    });
+}
+
+function loadTodos(userId) {
+  fetch(`http://localhost:8083/api/todos`)
+    .then((response) => response.json())
+    .then((todos) => {
+      const userTodos = todos.filter((todo) => todo.userid == userId);
+      while (todosTable.firstChild) {
+        todosTable.removeChild(todosTable.firstChild);
+      }
+      userTodos.forEach((todo) => {
+        const row = document.createElement("tr");
+
+        const descriptionCell = document.createElement("td");
+        descriptionCell.textContent = todo.description;
+        row.appendChild(descriptionCell);
+
+        const deadlineCell = document.createElement("td");
+        deadlineCell.textContent = todo.deadline;
+        row.appendChild(deadlineCell);
+
+        // Completed with editable dropdown
+        const completedCell = document.createElement("td");
+        const statusDropdown = document.createElement("select");
+        statusDropdown.className = "form-select";
+        statusDropdown.innerHTML = `
+          <option value="Pending" ${!todo.completed ? "selected" : ""}>Pending</option>
+          <option value="In Progress" ${todo.completed === "In Progress" ? "selected" : ""}>In Progress</option>
+          <option value="Completed" ${todo.completed ? "selected" : ""}>Completed</option>
+        `;
+        statusDropdown.addEventListener("change", () => updateTodoStatus(todo.id, statusDropdown.value));
+        completedCell.appendChild(statusDropdown);
+        row.appendChild(completedCell);
+
+        // Delete button
+        const deleteCell = document.createElement('td');
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'btn btn-danger btn-sm';
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', () => deleteTodo(todo.id, userId));
+        deleteCell.appendChild(deleteButton);
+        row.appendChild(deleteCell);
+
+        todosTable.appendChild(row);
+      });
+    })
+    .catch((error) => {
+      console.error("Error fetching todos:", error);
+    });
+}
+
+// Update todo status
+function updateTodoStatus(todoId, newStatus) {
+  const statusValue = newStatus === "Completed";
+
+  fetch(`http://localhost:8083/api/todos/${todoId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ completed: statusValue }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to update status");
+      }
+      alert("Task status updated successfully!");
+    })
+    .catch((error) => {
+      console.error("Error updating task status:", error);
+      alert("Failed to update task status. Please try again.");
+    });
+}
+
+// Delete todo
+function deleteTodo(todoId, userId) {
+  if (!confirm('Are you sure you want to delete this task?')) return;
+
+  fetch(`http://localhost:8083/api/todos/${todoId}`, {
+    method: 'DELETE',
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Failed to delete task');
+      }
+      alert('Task deleted successfully!');
+      loadTodos(userId); // Reload tasks after deletion
+    })
+    .catch((error) => {
+      console.error('Error deleting task:', error);
+      alert('Failed to delete task. Please try again.');
+    });
+}
+
+
+userDropdown.addEventListener("change", function () {
+  const userId = this.value;
+  if (userId) {
+    loadTodos(userId);
+  } else {
+    while (todosTable.firstChild) {
+      todosTable.removeChild(todosTable.firstChild);
     }
-
-    function loadTodos(userId) {
-        fetch(`http://localhost:8083/api/todos`)
-          .then(response => response.json())
-          .then(todos => {
-            const userTodos = todos.filter(todo => todo.userid == userId);
-            while (todosTable.firstChild) {
-                todosTable.removeChild(todosTable.firstChild);
-            }
-                userTodos.forEach(todo => {
-                    const row = document.createElement('tr');
-    
-                    const descriptionCell = document.createElement('td');
-                    descriptionCell.textContent = todo.description;
-                    row.appendChild(descriptionCell);
-
-                    const deadlineCell = document.createElement('td');
-                    deadlineCell.textContent = todo.deadline;
-                    row.appendChild(deadlineCell);
-
-                    const completedCell = document.createElement('td');
-                    completedCell.textContent = todo.completed ? '✔️' : '❌';
-                    row.appendChild(completedCell);
-
-                    todosTable.appendChild(row);
-                });
-              })
-              .catch(error => {
-                console.error('Error fetching todos:', error);
-              });
-          }
-          userDropdown.addEventListener('change', function () {
-            const userId = this.value; 
-            if (userId) {
-              loadTodos(userId); 
-            } else {
-              while (todosTable.firstChild) {
-                todosTable.removeChild(todosTable.firstChild);
-              }           
-             }
-          });
-          loadUsers();
-
-
+  }
+});
+loadUsers();
