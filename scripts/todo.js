@@ -36,15 +36,32 @@ function loadTodos(userId) {
         deadlineCell.textContent = todo.deadline;
         row.appendChild(deadlineCell);
 
-        // Completed with editable dropdown
-        const completedCell = document.createElement("td");
-        const statusDropdown = document.createElement("select");
-        statusDropdown.className = "form-select";
-        statusDropdown.innerHTML = `
-          <option value="Pending" ${!todo.completed ? "selected" : ""}>Pending</option>
-          <option value="In Progress" ${todo.completed === "In Progress" ? "selected" : ""}>In Progress</option>
-          <option value="Completed" ${todo.completed ? "selected" : ""}>Completed</option>
-        `;
+       // Completed cell with dropdown
+       const completedCell = document.createElement("td");
+       const statusDropdown = document.createElement("select");
+       statusDropdown.className = "form-select";
+
+       // Dropdown options
+       const pendingOption = document.createElement("option");
+       pendingOption.value = "Pending";
+       pendingOption.textContent = "Pending";
+       if (!todo.completed) pendingOption.selected = true;
+
+       const inProgressOption = document.createElement("option");
+       inProgressOption.value = "In Progress";
+       inProgressOption.textContent = "In Progress";
+       if (todo.completed === "In Progress") inProgressOption.selected = true;
+
+       const completedOption = document.createElement("option");
+       completedOption.value = "Completed";
+       completedOption.textContent = "Completed";
+       if (todo.completed) completedOption.selected = true;
+
+       // Append options to dropdown
+       statusDropdown.appendChild(pendingOption);
+       statusDropdown.appendChild(inProgressOption);
+       statusDropdown.appendChild(completedOption);
+
         statusDropdown.addEventListener("change", () => updateTodoStatus(todo.id, statusDropdown.value));
         completedCell.appendChild(statusDropdown);
         row.appendChild(completedCell);
