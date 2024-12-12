@@ -26,24 +26,63 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   
     // Load categories into the dropdown
-    async function loadCategories() {
-      try {
-        const response = await fetch("http://localhost:8083/api/categories");
-        if (!response.ok) throw new Error("Failed to fetch categories");
-        const categories = await response.json();
+async function loadCategories() {
+    try {
+      const response = await fetch("http://localhost:8083/api/categories");
+      if (!response.ok) throw new Error("Failed to fetch categories");
+      const categories = await response.json();
   
-        categories.forEach((category) => {
-          const option = document.createElement("option");
-          option.value = category; // Assuming categories are strings
-          option.textContent = category;
-          categorySelect.appendChild(option);
-        });
-      } catch (error) {
-        console.error("Error loading categories:", error);
-        alert("Failed to load categories. Please try again.");
-      }
+      categories.forEach((category) => {
+        const option = document.createElement("option");
+        option.value = category; // Use the actual category value if needed
+        option.textContent = typeof category === "string" ? category : category.name || category.title || "Unknown Category";
+        categorySelect.appendChild(option);
+      });
+    } catch (error) {
+      console.error("Error loading categories:", error);
+      alert("Failed to load categories. Please try again.");
     }
+  }
   
+   // Fetch and display tasks for the selected user
+   async function loadTasks(userId) {
+    try {
+      const response = await fetch(`http://localhost:8083/api/todos/byuser/${userId}`);
+      if (!response.ok) throw new Error("Failed to fetch tasks");
+      const tasks = await response.json();
+  
+      // Clear the table
+      tasksTable.innerHTML = "";
+  
+      // Populate the table
+      tasks.forEach((task) => {
+        const categoryDisplay = typeof task.category === "string" ? task.category : task.category.name || "Unknown"; // Access nested property
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${task.description}</td>
+          <td>${categoryDisplay}</td>
+          <td>${task.priority}</td>
+          <td>${task.deadline}</td>
+          <td>${task.completed ? "Completed" : "Pending"}</td>
+        `;
+        tasksTable.appendChild(row);
+      });
+    } catch (error) {
+      console.error("Error loading tasks:", error);
+      alert("Failed to load tasks. Please try again.");
+    }
+  }
+
+  // Handle user selection change to load tasks
+  userSelect.addEventListener("change", () => {
+    const userId = userSelect.value;
+    if (userId && userId !== "#") {
+      loadTasks(userId);
+    } else {
+      tasksTable.innerHTML = ""; // Clear table if no user selected
+    }
+  });
+
     // Handle form submission
     submitButton.addEventListener("click", async (event) => {
       event.preventDefault(); // Prevent default form submission
