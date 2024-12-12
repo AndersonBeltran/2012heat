@@ -51,41 +51,41 @@ document.addEventListener("DOMContentLoaded", async () => {
       const response = await fetch(`http://localhost:8083/api/todos/byuser/${userId}`);
       if (!response.ok) throw new Error("Failed to fetch tasks");
       const tasks = await response.json();
-  
+
       // Clear existing rows in the table body
       while (tasksTableBody.firstChild) {
         tasksTableBody.removeChild(tasksTableBody.firstChild);
       }
-  
+
       // Populate the table body
       tasks.forEach((task) => {
         const row = document.createElement("tr");
-  
+
         // Description
         const descriptionCell = document.createElement("td");
         descriptionCell.textContent = task.description;
         row.appendChild(descriptionCell);
-  
+
         // Category
         const categoryCell = document.createElement("td");
         categoryCell.textContent = task.category;
         row.appendChild(categoryCell);
-  
+
         // Priority
         const priorityCell = document.createElement("td");
         priorityCell.textContent = task.priority;
         row.appendChild(priorityCell);
-  
+
         // Deadline
         const deadlineCell = document.createElement("td");
         deadlineCell.textContent = task.deadline;
         row.appendChild(deadlineCell);
-  
+
         // Completed Status
         const statusCell = document.createElement("td");
         statusCell.textContent = task.completed ? "Completed" : "Pending";
         row.appendChild(statusCell);
-  
+
         tasksTableBody.appendChild(row);
       });
     } catch (error) {
@@ -105,7 +105,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const deadline = deadlineInput.value;
 
     // Validate fields
-    if (!userId || userId === "#" || !category || category === "#" || !priority || priority === "#" || !description || !deadline) {
+    if (
+      !userId ||
+      userId === "#" ||
+      !category ||
+      category === "#" ||
+      !priority ||
+      priority === "#" ||
+      !description ||
+      !deadline
+    ) {
       alert("Please fill out all fields before submitting.");
       return;
     }

@@ -36,25 +36,42 @@ function loadTodos(userId) {
         deadlineCell.textContent = todo.deadline;
         row.appendChild(deadlineCell);
 
-        // Completed with editable dropdown
+        // Completed cell with dropdown
         const completedCell = document.createElement("td");
         const statusDropdown = document.createElement("select");
         statusDropdown.className = "form-select";
-        statusDropdown.innerHTML = `
-          <option value="Pending" ${!todo.completed ? "selected" : ""}>Pending</option>
-          <option value="In Progress" ${todo.completed === "In Progress" ? "selected" : ""}>In Progress</option>
-          <option value="Completed" ${todo.completed ? "selected" : ""}>Completed</option>
-        `;
+
+        // Dropdown options
+        const pendingOption = document.createElement("option");
+        pendingOption.value = "Pending";
+        pendingOption.textContent = "Pending";
+        if (!todo.completed) pendingOption.selected = true;
+
+        const inProgressOption = document.createElement("option");
+        inProgressOption.value = "In Progress";
+        inProgressOption.textContent = "In Progress";
+        if (todo.completed === "In Progress") inProgressOption.selected = true;
+
+        const completedOption = document.createElement("option");
+        completedOption.value = "Completed";
+        completedOption.textContent = "Completed";
+        if (todo.completed) completedOption.selected = true;
+
+        // Append options to dropdown
+        statusDropdown.appendChild(pendingOption);
+        statusDropdown.appendChild(inProgressOption);
+        statusDropdown.appendChild(completedOption);
+
         statusDropdown.addEventListener("change", () => updateTodoStatus(todo.id, statusDropdown.value));
         completedCell.appendChild(statusDropdown);
         row.appendChild(completedCell);
 
         // Delete button
-        const deleteCell = document.createElement('td');
-        const deleteButton = document.createElement('button');
-        deleteButton.className = 'btn btn-danger btn-sm';
-        deleteButton.textContent = 'Delete';
-        deleteButton.addEventListener('click', () => deleteTodo(todo.id, userId));
+        const deleteCell = document.createElement("td");
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "btn btn-danger btn-sm";
+        deleteButton.textContent = "Delete";
+        deleteButton.addEventListener("click", () => deleteTodo(todo.id, userId));
         deleteCell.appendChild(deleteButton);
         row.appendChild(deleteCell);
 
@@ -89,24 +106,23 @@ function updateTodoStatus(todoId, newStatus) {
 
 // Delete todo
 function deleteTodo(todoId, userId) {
-  if (!confirm('Are you sure you want to delete this task?')) return;
+  if (!confirm("Are you sure you want to delete this task?")) return;
 
   fetch(`http://localhost:8083/api/todos/${todoId}`, {
-    method: 'DELETE',
+    method: "DELETE",
   })
     .then((response) => {
       if (!response.ok) {
-        throw new Error('Failed to delete task');
+        throw new Error("Failed to delete task");
       }
-      alert('Task deleted successfully!');
+      alert("Task deleted successfully!");
       loadTodos(userId); // Reload tasks after deletion
     })
     .catch((error) => {
-      console.error('Error deleting task:', error);
-      alert('Failed to delete task. Please try again.');
+      console.error("Error deleting task:", error);
+      alert("Failed to delete task. Please try again.");
     });
 }
-
 
 userDropdown.addEventListener("change", function () {
   const userId = this.value;
