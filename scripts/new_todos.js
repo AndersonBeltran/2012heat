@@ -35,8 +35,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       categories.forEach((category) => {
         const option = document.createElement("option");
-        option.value = category;
-        option.textContent = typeof category === "string" ? category : category.name || "Unknown";
+        option.value = category.name;
+        option.textContent = category.name;
         categorySelect.appendChild(option);
       });
     } catch (error) {
@@ -68,10 +68,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   
         // Category
         const categoryCell = document.createElement("td");
-        const categoryDisplay = typeof task.category === "string" 
-          ? task.category 
-          : task.category.name || task.category.title || "Unknown"; // Use appropriate property
-        categoryCell.textContent = categoryDisplay;
+        categoryCell.textContent = task.category;
         row.appendChild(categoryCell);
   
         // Priority
